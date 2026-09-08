@@ -1,4 +1,4 @@
-Hardening SSH in Linux
+# Hardening SSH in Linux
 
 All steps are followed on the ssh server.
 Hardening OpenSSH service is one of the most vital steps to protect a Linux server. The majority of configurations are managed through the main configuration file, where is generally found in `/etc/ssh/sshd_config` or inside of `/etc/ssh/sshd_config.d/`

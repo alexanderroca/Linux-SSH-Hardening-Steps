@@ -71,7 +71,7 @@ ssh user1@<IP>
 The `root` user exists in all Linux systems, therefore is one of the main target to be attacked. You should always logging as a standard user with reduced privileges and use `sudo` for any administrative task.
 
 ``` text
-PermitRootLogin prohibit-password
+PermitRootLogin no
 ```
 
 ## 3. Restrict which user should be able to connect

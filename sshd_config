@@ -29,7 +29,7 @@ Port 2222
 # Authentication:
 
 LoginGraceTime 3m
-PermitRootLogin prohibit-password
+PermitRootLogin no
 #StrictModes yes
 MaxAuthTries 3
 #MaxSessions 10

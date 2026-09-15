@@ -170,3 +170,40 @@ Using Debian’s modular drop-in architecture keeps session and subsystem harden
 sudo vim /etc/ssh/sshd_config.d/session-hardening.conf
 ```
 
+2. Add the session control and forwarding lockdown directives:
+```Plaintext
+# --- Idle Timeouts ---
+# Send a null packet to the client every 300 seconds (5 minutes) of inactivity
+ClientAliveInterval 300
+# Drop the connection if the client fails to respond 2 consecutive times (10 minutes total)
+ClientAliveCountMax 2
+
+# --- Subsystem & Forwarding Lockdown ---
+# Disable TCP port forwarding (prevents attackers from using SSH as a tunneling proxy)
+AllowTcpForwarding no
+# Disable SSH agent forwarding (prevents local key extraction if a session is compromised)
+AllowAgentForwarding no
+# Disable graphical X11 forwarding (reduces attack surface)
+X11Forwarding no
+# Disable tun device forwarding
+PermitTunnel no
+```
+
+3. Save and close the file.
+
+## Syntax Testing and Service Restart
+
+> [!Warning]
+> Never restart the SSH daemon without validating syntax first, or you risk locking yourself out.
+
+1. Test the configuration syntax:
+```Bash
+sudo sshd -t
+```
+
+*(If the command returns no output and exits with `0`, the syntax is correct.)*
+
+2. Restart the SSH service to apply the new baseline:
+```Bash
+sudo systemctl restart ssh
+```

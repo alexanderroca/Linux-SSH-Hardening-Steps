@@ -84,6 +84,8 @@ ssh username@your_server_ip
 
 3. Confirm you are logged in instantly via your cryptographic key without a password prompt.
 
+---
+
 # Additional Steps
 
 ## Modify port
@@ -110,4 +112,47 @@ Tell SSH to use the banner message. Open the `hardening.conf` and find the line 
 ``` text
 # Provide specific information in banner messages.
 Banner /etc/issue.net
+```
+
+---
+
+# SSH Cryptographic Hardening
+
+## Configuring Modern Cryptography
+
+On Debian, modular configuration files inside the drop-in directory keep system overrides clean and isolated from the main configuration.
+1. Create a dedicated configuration file:
+```Bash
+sudo vim /etc/ssh/sshd_config.d/crypto-hardening.conf
+```
+
+2. Add the strict cryptographic policies:
+```Plaintext
+# Modern Key Exchange Algorithms
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+
+# High-Performance, Secure Ciphers
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+
+# Encrypted-then-MAC (EtM) Message Authentication Codes
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+```
+
+3. Save and close the file
+
+## Syntax Testing and Service Restart
+
+> [!Warning]
+> Never restart the SSH daemon without validating syntax first, or you risk locking yourself out.
+
+1. Test the configuration syntax:
+```Bash
+sudo sshd -t
+```
+
+*(If the command returns no output and exits with `0`, the syntax is correct.)*
+
+2. Restart the SSH service to apply the new baseline:
+```Bash
+sudo systemctl restart ssh
 ```

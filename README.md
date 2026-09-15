@@ -156,3 +156,17 @@ sudo sshd -t
 ```Bash
 sudo systemctl restart ssh
 ```
+
+---
+
+# SSH Session Hardening
+
+## Configuring Session Timeouts and Forwarding Restrictions
+
+Using Debian’s modular drop-in architecture keeps session and subsystem hardening cleanly isolated from the main configuration file.
+
+1. Create a dedicated configuration file:
+```Bash
+sudo vim /etc/ssh/sshd_config.d/session-hardening.conf
+```
+
